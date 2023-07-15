@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from 'react';
+import ReactiveButton from 'reactive-button';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,6 +15,8 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { WidthFull } from '@mui/icons-material';
+import { useState } from 'react';
 
 
 function Copyright(props: any) {
@@ -33,6 +36,17 @@ function Copyright(props: any) {
 const defaultTheme = createTheme();
 
 export default function SignInSide() {
+
+  const [state, setState] = useState('idle');
+
+  const onClickHandler = () => {
+    setState('loading');
+
+    // send an HTTP request
+    setTimeout(() => {
+      setState('success');
+    }, 2000);
+  };
   
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -102,15 +116,16 @@ export default function SignInSide() {
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
               />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                Sign In
-              </Button>
+              <ReactiveButton outline
+                type={"submit"}
+                size='large'
+                buttonState={state}
+                width="100%"
+                loadingText="Loading"
+                successText="Done"
+                onClick={onClickHandler}
+                idleText="Sign In"
+              />
               <Grid container>
                 <Grid item xs>
                   <Link href="#" variant="body2">
